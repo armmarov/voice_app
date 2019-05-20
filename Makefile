@@ -1,7 +1,18 @@
+IMAGE_NAME = armmarov_voice
+CONTAINER_NAME = voice_app
+
 build:
-	docker build -t armmarov_robot .
+	docker build -t $(IMAGE_NAME) .
+
+rebuild: stop run
+
+stop:
+	docker rm -f $(CONTAINER_NAME)
 
 run:
-	docker run -p 3333:3333 -h 0.0.0.0 armmarov_robot
+	docker run -d -p 3333:3333 --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
-.PHONY: build run
+test:
+	npm test
+
+.PHONY: build run rebuild test stop
